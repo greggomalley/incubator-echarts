@@ -372,8 +372,8 @@ Calendar.prototype = {
             range.reverse();
         }
 
-        var allDay = Math.floor(range[1].time / PROXIMATE_ONE_DAY)
-            - Math.floor(range[0].time / PROXIMATE_ONE_DAY) + 1;
+//         var allDay = Math.floor(range[1].time / PROXIMATE_ONE_DAY)
+//             - Math.floor(range[0].time / PROXIMATE_ONE_DAY) + 1;
 
         // Consider case:
         // Firstly set system timezone as "Time Zone: America/Toronto",
@@ -383,19 +383,21 @@ Calendar.prototype = {
         // var allDays = Math.floor(second / ONE_DAY) - Math.floor(first / ONE_DAY) + 1;
         // ```
         // will get wrong result because of DST. So we should fix it.
-        var date = new Date(range[0].time);
-        var startDateNum = date.getDate();
-        var endDateNum = range[1].date.getDate();
-        date.setDate(startDateNum + allDay - 1);
-        // The bias can not over a month, so just compare date.
-        if (date.getDate() !== endDateNum) {
-            var sign = date.getTime() - range[1].time > 0 ? 1 : -1;
-            while (date.getDate() !== endDateNum && (date.getTime() - range[1].time) * sign > 0) {
-                allDay -= sign;
-                date.setDate(startDateNum + allDay - 1);
-            }
-        }
+//         var date = new Date(range[0].time);
+//         var startDateNum = date.getDate();
+//         var endDateNum = range[1].date.getDate();
+//         date.setDate(startDateNum + allDay - 1);
+//         // The bias can not over a month, so just compare date.
+//         if (date.getDate() !== endDateNum) {
+//             var sign = date.getTime() - range[1].time > 0 ? 1 : -1;
+//             while (date.getDate() !== endDateNum && (date.getTime() - range[1].time) * sign > 0) {
+//                 allDay -= sign;
+//                 date.setDate(startDateNum + allDay - 1);
+//             }
+//         }
 
+        var allDay = Math.round((range[1].time - range[0].time) / PROXIMATE_ONE_DAY) +  1;
+        
         var weeks = Math.floor((allDay + range[0].day + 6) / 7);
         var nthWeek = reversed ? -weeks + 1 : weeks - 1;
 
